@@ -31,7 +31,6 @@ def add_next_page_to_url(url: str, next_page_token: str) -> str:
 class AuthException(Exception):
     pass
 
-
 class NotFoundException(Exception):
     pass
 
@@ -43,24 +42,38 @@ def get(source: str, url: str, headers: dict = {}):
     with metrics.http_request_timer(source) as timer:
         get_session().headers.update(headers)
         resp = get_session().request(method='get', url=url)
+        
         if resp.status_code == 401:
             raise AuthException(resp.text)
         if resp.status_code == 403:
             raise AuthException(resp.text)
         if resp.status_code == 404:
             raise NotFoundException(resp.text)
+        
+        resp.raise_for_status()
 
         timer.tags[metrics.Tag.http_status_code] = resp.status_code
         return resp
 
 
 def get_all_pages(source: str, url: str, headers: dict = {}):
+    
     temp_url = str(url)
+    
     while True:
-        r = get(source, temp_url, headers)
-        r.raise_for_status()
-        data = r.json()
-        yield data
+        try:
+            r = get(source, temp_url, headers)
+        
+        except NotFoundException as er:
+            LOGGER.exception(er)
+
+        except AuthException as er:
+            LOGGER.exception(er)
+        
+        finally:
+            data = r.json()
+            yield data
+        
         if data.get('next_page_token') is not None:
             temp_url = add_next_page_to_url(url, data.get('next_page_token'))
         else:
