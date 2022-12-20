@@ -66,9 +66,11 @@ def get_all_pages(source: str, url: str, headers: dict = {}):
         
         except NotFoundException as er:
             LOGGER.exception(er)
+            break
 
         except AuthException as er:
             LOGGER.exception(er)
+            break
         
         else:
             data = r.json()
