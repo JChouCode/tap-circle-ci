@@ -70,7 +70,7 @@ def get_all_pages(source: str, url: str, headers: dict = {}):
         except AuthException as er:
             LOGGER.exception(er)
         
-        finally:
+        else:
             data = r.json()
             yield data
         
