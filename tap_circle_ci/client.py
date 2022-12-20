@@ -74,11 +74,11 @@ def get_all_pages(source: str, url: str, headers: dict = {}):
             data = r.json()
             yield data
         
-        if data.get('next_page_token') is not None:
-            temp_url = add_next_page_to_url(url, data.get('next_page_token'))
-        else:
-            get_session().headers.pop("next_page_token", None)
-            break
+            if data.get('next_page_token') is not None:
+                temp_url = add_next_page_to_url(url, data.get('next_page_token'))
+            else:
+                get_session().headers.pop("next_page_token", None)
+                break
 
 
 def get_all_items(source: str, url: str, headers: dict = {}):
