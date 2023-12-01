@@ -29,6 +29,27 @@
         ]
       }
     },
+    "executor": {
+      "type": [
+        "null",
+        "object"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "resource_class": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "type": {
+          "type": [
+            "null",
+            "string"
+          ]
+        }
+      }
+    },
     "job_number": {
       "type": [
         "null",
@@ -61,6 +82,12 @@
       "type": [
         "null",
         "string"
+      ]
+    },
+    "parallelism": {
+      "type": [
+        "null",
+        "integer"
       ]
     },
     "project_slug": {

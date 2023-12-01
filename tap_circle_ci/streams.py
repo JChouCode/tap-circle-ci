@@ -1,3 +1,4 @@
+import datetime
 from typing import List, Optional
 
 import singer
@@ -40,6 +41,12 @@ def write_bookmark(state: dict, project: str, string_to_bookmark: str):
 
     singer.write_state(bookmarked_state)
     return bookmarked_state
+
+
+def pipeline_is_aged_out(pipeline):
+    ninety_days_ago = singer.utils.now() - datetime.timedelta(days=90)
+    return ninety_days_ago > singer.utils.strptime_to_utc(
+            pipeline.get('updated_at'))
 
 
 def pipeline_is_completed(workflows):
@@ -106,7 +113,7 @@ def get_all_pipelines(schemas: dict, project: str, state: dict, metadata: dict, 
         workflows = get_all_workflows_for_pipeline(pipeline)
 
         # We terminate extracting once we come across currently running pipelines
-        if not pipeline_is_completed(workflows):
+        if not pipeline_is_aged_out(pipeline) and not pipeline_is_completed(workflows):
             LOGGER.warning(f'get_all_pipelines: Found currently running pipelines at {pipeline} len(workflows): {len(workflows)}')
             break
 
