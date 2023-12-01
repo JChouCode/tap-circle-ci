@@ -5,7 +5,7 @@ import singer
 import singer.metadata as metadata_lib
 import singer.bookmarks as bookmarks
 import singer.metrics as metrics
-from tap_circle_ci.client import NotFoundException, get_all_items
+from tap_circle_ci.client import NotFoundException, get_single_entry, get_all_items
 
 LOGGER = singer.get_logger()
 
@@ -216,13 +216,20 @@ def get_all_jobs_for_workflow(
     """
 
     workflow_id = workflow.get("id")
+    slug = workflow.get("project_slug")
 
     if job_counter is None:
         job_counter = metrics.record_counter('jobs')
 
-    job_url = f"https://circleci.com/api/v2/workflow/{workflow_id}/job"
+    jobs_url = f"https://circleci.com/api/v2/workflow/{workflow_id}/job"
     extraction_time = singer.utils.now()
-    for job in get_all_items('jobs', job_url):
+    for job in get_all_items('jobs', jobs_url):
+        build_num = job.get("job_number")
+        job_details = {}
+
+        if build_num:
+            job_url = f"https://circleci.com/api/v2/project/{slug}/job/{build_num}"
+            job_details = get_single_entry('job', job_url).json()
 
         # add in workflow_id and pipeline_id
         job.update({
@@ -230,6 +237,10 @@ def get_all_jobs_for_workflow(
             '_workflow_id': workflow_id,
             'pipeline_id': pipeline_id,
             'workflow_id': workflow_id,
+
+            'executor': job_details.get('executor'),
+            'parallelism': job_details.get('parallelism'),
+            'contexts': [x.get('name') for x in job_details.get('contexts', [])]
         })
 
         # Transform and write

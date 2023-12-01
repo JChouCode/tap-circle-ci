@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 python -m venv venv/tap-circle-ci
-source /code/venv/target-postgres/bin/activate
+source /code/venv/tap-circle-ci/bin/activate
 
 pip install -e .[tests]
 

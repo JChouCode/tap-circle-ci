@@ -41,7 +41,7 @@ This tap:
 1. Install
 
    ```bash
-   git clone git@github.com:sisudata/tap-circle-ci.git && cd tap-circle-ci && pip install -e .
+   git clone git@github.com:apollographql/tap-circleci.git && cd tap-circleci && pip install -e .
    ```
 
 2. Create a Circle CI access token
@@ -66,7 +66,7 @@ This tap:
 4. Run the tap in discovery mode to get catalog.json file
 
    ```bash
-   tap-circle-ci --config config.json --discover > catalog.json
+   tap-circleci --config config.json --discover > catalog.json
    ```
 
 5. In the catalog.json file, select the streams to sync
@@ -110,16 +110,16 @@ This tap:
 
 6. Run the application (will print records and other messages to the console)
 
-   `tap-circle-ci` can be run with:
+   `tap-circleci` can be run with:
 
    ```bash
-   tap-circle-ci --config config.json --catalog catalog.json
+   tap-circleci --config config.json --catalog catalog.json
    ```
 
    To save output to a file:
 
    ```bash
-   tap-circle-ci --config config.json --catalog catalog.json > output.txt
+   tap-circleci --config config.json --catalog catalog.json > output.txt
    ```
 
    It is our intention that this singer tap gets used with a singer target, which will load the output into a database.
@@ -134,8 +134,8 @@ This tap:
      "type": "STATE",
      "value": {
        "bookmarks": {
-         "gh/sisudata/tap-circle-ci": {
-           "pipelines": { "since": "2021-05-28T22:02:27.620127Z" }
+         "gh/apollographql/tap-circleci": {
+           "pipelines": { "since": "2023-11-15T00:00:00.000000Z" }
          }
        }
      }
@@ -145,7 +145,7 @@ This tap:
    Select the `value` key, store it to a JSON file, and run:
 
    ```bash
-   tap-circle-ci --config config.json --catalog catalog.json --state state.json
+   tap-circleci --config config.json --catalog catalog.json --state state.json
    ```
 
 ## Configuration
