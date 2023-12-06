@@ -281,6 +281,7 @@ def get_all_steps_for_job(
         step_counter = metrics.record_counter('jobs')
 
     workflow_id = workflow.get("id")
+    job_id = job.get("id")
     slug = workflow.get("project_slug")
     build_num = job.get("job_number")
 
@@ -299,10 +300,10 @@ def get_all_steps_for_job(
             step.update({
                 '_pipeline_id': pipeline_id,
                 '_workflow_id': workflow_id,
-                '_job_id': workflow_id,
+                '_job_id': job_id,
                 'pipeline_id': pipeline_id,
                 'workflow_id': workflow_id,
-                'job_id': workflow_id,
+                'job_id': job_id,
                 '_index': idx
             })
 
