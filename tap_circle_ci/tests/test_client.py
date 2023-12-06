@@ -25,13 +25,13 @@ def test_get():
         fake_session.request.side_effect = [resp1, resp2, resp3]
         gs.return_value = fake_session
 
-        r = get('pipelines', 'https://circleci.com/api/v2/project/project1/pipeline')
+        r = get_single_entry('pipelines', 'https://circleci.com/api/v2/project/project1/pipeline')
         assert r.text == 'success'
         assert r.status_code == 200
         with pytest.raises(AuthException):
-            get('pipelines', 'https://circleci.com/api/v2/project/project1/pipeline')
+            get_single_entry('pipelines', 'https://circleci.com/api/v2/project/project1/pipeline')
         with pytest.raises(NotFoundException):
-            get('pipelines', 'https://circleci.com/api/v2/project/project1/pipeline')
+            get_single_entry('pipelines', 'https://circleci.com/api/v2/project/project1/pipeline')
 
 
 def test_get_all_items():

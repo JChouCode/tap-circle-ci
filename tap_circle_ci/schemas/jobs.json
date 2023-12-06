@@ -17,6 +17,18 @@
     "workflow_id": {
       "type": "string"
     },
+    "contexts": {
+      "type": [
+        "null",
+        "array"
+      ],
+      "items": {
+        "type": [
+          "null",
+          "string"
+        ]
+      }
+    },
     "dependencies": {
       "type": [
         "null",

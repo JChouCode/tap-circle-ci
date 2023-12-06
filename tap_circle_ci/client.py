@@ -38,9 +38,9 @@ class NotFoundException(Exception):
     pass
 
 
-def get(source: str, url: str, headers: dict = {}):
+def get_single_entry(source: str, url: str, headers: dict = {}):
     """
-    Get a single page from the provided url
+    Get a single entryp from the provided url
     """
 
     with metrics.http_request_timer(source) as timer:
@@ -70,7 +70,7 @@ def get_all_pages(source: str, url: str, headers: dict = {}):
         LOGGER.info(f'get_all_pages: Paginating({counter}): {source}')
         counter += 1
 
-        r = get(source, temp_url, headers)
+        r = get_single_entry(source, temp_url, headers)
         r.raise_for_status()
         data = r.json()
         yield data
