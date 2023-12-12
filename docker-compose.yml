@@ -1,7 +1,7 @@
 version: '3'
 services:
   tap:
-    image: python:3.9.5-buster
+    image: python:3.11.4-buster
     entrypoint: /code/docker-entrypoint.sh
     working_dir: /code
     environment:
