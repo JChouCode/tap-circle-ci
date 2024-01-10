@@ -23,6 +23,7 @@ workflows:
             - secops-oidc
             - github-orb
           git-base-revision: <<#pipeline.git.base_revision>><<pipeline.git.base_revision>><</pipeline.git.base_revision >>
+
 cache: &cache v0-{{ checksum "setup.py" }}
 
 jobs:
