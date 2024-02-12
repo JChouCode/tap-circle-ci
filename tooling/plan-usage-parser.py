@@ -103,13 +103,13 @@ def spit(dicts):
     for d in dicts:
         writer.writerow(d)
     
-    return output.getvalue()
+    return output.getvalue().strip()
 
 
 def main(args):
     input_file_path = args[1]
     parsed = parse(input_file_path)
-    print(spit(parsed))
+    print(spit(parsed), end='')
 
 
 main(sys.argv)
