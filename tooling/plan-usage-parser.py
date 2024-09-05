@@ -1,5 +1,6 @@
 import csv
-from datetime import datetime, UTC
+from datetime import datetime
+from datetime import timezone
 import io
 import re
 import sys
@@ -35,7 +36,7 @@ def parse_date_header(date_header):
     'Mar 01, 2023 - Mar 31, 2023' -> 2023-03-01T00:00:00+00:00
     '''
     date = re.search(r'^(.*?) -', date_header).group(1)
-    return datetime.strptime(date, '%b %d, %Y').replace(tzinfo=UTC).isoformat()
+    return datetime.strptime(date, '%b %d, %Y').replace(tzinfo=timezone.utc).isoformat()
 
 
 def parse_summary_to_date_headers(rows):
@@ -103,13 +104,13 @@ def spit(dicts):
     for d in dicts:
         writer.writerow(d)
     
-    return output.getvalue()
+    return output.getvalue().rstrip()
 
 
 def main(args):
     input_file_path = args[1]
     parsed = parse(input_file_path)
-    print(spit(parsed))
+    print(spit(parsed), end='')
 
 
 main(sys.argv)
